@@ -1,0 +1,21 @@
+# Gereksinimler
+1. Üye Olma(Eray ALTINER)
+2. Giriş Yapma(Eray ALTINER)
+3. Şifremi Unuttum(Eray ALTINER)
+4. Sepete Ürün ekleme(Eray ALTINER)
+5. Sepetten Ürün Çıkarma(Eray ALTINER)
+6. Favorilere Ürün Ekleme(Eray ALTINER)
+7. Favorilerden Ürün Çıkarma(Eray ALTINER)
+8. Favorileri Listeleme(Eray ALTINER)
+9. Ürün ve Ürün Bilgisi Girişi(Ahmet KAÇAN)
+10. Kargo Takibi(Ahmet KAÇAN)
+11. Adres Kaydetme(Ahmet KAÇAN)
+12. Kart Bilgisi Kaydetme(Ahmet KAÇAN)
+13. Ürün Yorumları(Ahmet KAÇAN)
+14. Dil Tercihleri(Ahmet KAÇAN)
+15. Ürün Arama(Ahmet KAÇAN)
+16. Ödeme Yapma(Ahmet KAÇAN)
+
+# Gereksinim Dağılımları
+1. [Eray Altıner'in Gereksinimleri](Eray-ALTINER-Gereksinimler.md)
+2. [Ahmet Kaçan'ın Gereksinimleri](Ahmet-KAÇAN-Gereksinimler.md)
