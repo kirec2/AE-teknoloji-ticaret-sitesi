@@ -17,4 +17,5 @@ Durum diyagramı, Alışveriş sitesi üzerinde kullanıcının ve adminin site 
 14. Dil Tercihleri
 15. Ürün Arama
 16. Ödeme Yapma
+
 ![Durum Diyagramı](https://github.com/user-attachments/assets/8f4472f0-0bc5-48eb-abf4-6c20ed394ba9)
