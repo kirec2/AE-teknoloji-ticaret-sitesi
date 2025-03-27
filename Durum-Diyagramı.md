@@ -1,4 +1,6 @@
-# Gereksinimler
+
+Durum diyagramı, Alışveriş sitesi üzerinde kullanıcının ve adminin site ile girebileceği etkileşimleri gösterir Diyagram aşağıdaki durumları içerir:
+
 1. Üye Olma
 2. Giriş Yapma
 3. Şifremi Unuttum
@@ -15,5 +17,4 @@
 14. Dil Tercihleri
 15. Ürün Arama
 16. Ödeme Yapma
-
-![Durum Diyagramı](https://github.com/user-attachments/files/19492971/Basliksiz.Diyagram.pdf)
+![Durum Diyagramı](https://github.com/user-attachments/assets/8f4472f0-0bc5-48eb-abf4-6c20ed394ba9)
