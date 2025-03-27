@@ -1,4 +1,4 @@
-#Durum Diyagramı
+# Durum Diyagramı
 Durum diyagramı, Alışveriş sitesi üzerinde kullanıcının ve adminin site ile girebileceği etkileşimleri gösterir Diyagram aşağıdaki durumları içerir:
 
 1. Üye Olma
