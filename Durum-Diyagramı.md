@@ -4,7 +4,7 @@ Durum diyagramı, Alışveriş sitesi üzerinde kullanıcının ve adminin site 
 1. Üye Olma
 2. Giriş Yapma
 3. Şifremi Unuttum
-4. Sepete Ürün ekleme(
+4. Sepete Ürün ekleme
 5. Sepetten Ürün Çıkarma
 6. Favorilere Ürün Ekleme
 7. Favorilerden Ürün Çıkarma
