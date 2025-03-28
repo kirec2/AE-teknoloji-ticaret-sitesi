@@ -18,4 +18,5 @@ Durum diyagramı, Alışveriş sitesi üzerinde kullanıcının ve adminin site 
 15. Ürün Arama
 16. Ödeme Yapma
 
-![Durum Diyagramı](https://github.com/user-attachments/assets/8f4472f0-0bc5-48eb-abf4-6c20ed394ba9)
+
+![Durum-Diyagram_](https://github.com/user-attachments/assets/27c8ac34-c49d-4955-8033-b83b2a6af4cb)
