@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.1">
+  <title>AE Teknloji Site Tasarımı</title>
+  <link rel="stylesheet" href="style.css"> 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
+
+</head>
+<body>
+
+
+<div class="header">
+
+
+    <div class="container">
+        
+        <div class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" width="125px">
+            </div>
+            <form>
+                <div class="search-bar">
+                    <span class="material-symbols-outlined">search</span>
+                    <input class="search-bar-input" type="search" placeholder="Ürün, kategori veya marka ara...">
+                    <button type="submit">Ara</button>
+                </div>
+            </form>
+           <nav>
+                <ul id="MenuItems">
+                 <li><a href="file.html">Ana Sayfa</a> </li>
+                 <li><a href="ürünler.html">Ürün</a> </li>
+                 <li><a href="favoriler.html">Favori</a> </li>
+                 <li><a href="kayıt.html">Hesap</a> </li>
+                 <li><a href="kargo-takip.html">Kargo Takip</a> </li>
+                </ul>
+            </nav>
+            <div class="language-selector">
+                <select id="languageSelect" onchange="changeLanguage()">
+                    <option value="tr">Türkçe</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <a href="sepet.html"><img src="images/cart.png" width="30px" height="30px"></a>
+            <img src="images/menu-icon.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+        <div>
+            <div class="row">
+              <div class="col-2">  
+                  <h1>Yeni Seri Beybladeler İle Heyecanı Doruklarda Yaşa <br>Yakında Burada </h1>
+                  <p>Metalin Ruhunu Hisset!</p> 
+                  <a href="" class="button">Şimdi Keşfet &#8594;</a>         
+              </div>
+             <div class="col-2">
+                 <img src="images/baner.jpg" >
+            </div>
+            </div>
+        </div> 
+    </div>
+</div>
+  
+<!-------- Series List -------->
+<div class="categories">
+    <div class="small-container">
+        <h2 class="title">Seriler</h2>
+        <div class="row">
+            <div class="col-3">
+                <img src="images/beyblade-bakuten.png" >
+            </div>
+            <div class="col-3">
+                 <img src="images/beyblade-metal.png" >
+            </div>
+            <div class="col-3">
+                 <img src="images/beyblade-burst.png" >
+            </div>
+            <div class="col-3">
+                 <img src="images/beyblade-x.png" >
+            </div>
+        </div>   
+    </div>
+        <div class="small-container"> 
+            <div class="row">  
+                <div class="col-3">
+                 <img src="images/bakugan.png" >
+                </div>     
+                <div class="col-3">
+                 <img src="images/bakutech.png" >
+                </div>
+                <div class="col-3">
+                  <img src="images/bakugan-battle-planet.png" >
+                </div>
+            </div>
+        </div>
+    
+</div>
+
+
+<!--Featured Products-->
+<div class="small-container"></div>
+  <h2 class="title">Öne Çıkarılan Ürünler</h2>
+<div class="row">
+     <div class="col-4">
+        <img src="images/ürün-1.jpg">
+        <h4>Beyblade Burst Greatest Raphael </h4> 
+        <!--<div class="rating">
+            <i class="fa fa-star" aria-hidden="true"></i> 
+        </div> -->
+        <p>650 tl</p>
+     </div>
+     <div class="col-4">
+        <img src="images/ürün-2.jpg">
+        <h4>Beyblade Burst Greatest Raphael </h4> 
+        <!--<div class="rating">
+            <i class="fa fa-star" aria-hidden="true"></i> 
+        </div> -->
+        <p>650 tl</p>
+      
+     </div>
+     <div class="col-4">
+        <img src="images/ürün-3.jpg">
+        <h4>Beyblade Burst Greatest Raphael </h4> 
+        <!--<div class="rating">
+            <i class="fa fa-star" aria-hidden="true"></i> 
+        </div> -->
+        <p>650 tl</p>
+      
+     </div>
+     <div class="col-4">
+        <img src="images/ürün-4.jpg">
+        <h4>Beyblade Burst Greatest Raphael </h4> 
+        <!--<div class="rating">
+            <i class="fa fa-star" aria-hidden="true"></i> 
+        </div> -->
+        <p>650 tl</p>
+     </div>
+</div>
+<h2 class="title">Son Eklenen Ürünler</h2>
+<div class="row">
+    <div class="col-4">
+        <img src="images/ürün-1.jpg">
+        <h4>Beyblade Burst Greatest Raphael </h4> 
+        <!--<div class="rating">
+            <i class="fa fa-star" aria-hidden="true"></i> 
+        </div> -->
+        <p>650 tl</p>
+     </div>
+     <div class="col-4">
+        <img src="images/ürün-2.jpg">
+        <h4>Beyblade Burst Greatest Raphael </h4> 
+        <!--<div class="rating">
+            <i class="fa fa-star" aria-hidden="true"></i> 
+        </div> -->
+        <p>650 tl</p>
+      
+     </div>
+     <div class="col-4">
+        <img src="images/ürün-3.jpg">
+        <h4>Beyblade Burst Greatest Raphael </h4> 
+        <!--<div class="rating">
+            <i class="fa fa-star" aria-hidden="true"></i> 
+        </div> -->
+        <p>650 tl</p>
+      
+     </div>
+     <div class="col-4">
+        <img src="images/ürün-4.jpg">
+        <h4>Beyblade Burst Greatest Raphael </h4> 
+        <!--<div class="rating">
+            <i class="fa fa-star" aria-hidden="true"></i> 
+        </div> -->
+        <p>650 tl</p>
+     </div>
+</div>
+<!--references->
+ <div class="comments">
+    <div class="small-container">
+        <div class="row">
+            <div class="yorum">
+                <p>Harika bir üründü paketleme çok özenli ve kargo çok hızlıydı</p>-->
+                <!--<div class="rating"></div>-
+            </div>
+        </div>
+    </div>
+ </div>-->
+ <div class="comment-container">
+
+    <div class="comment">
+      <div class="avatar">
+        <img src="images/avatar.png">
+      </div>
+      <div class="comment-contents">
+        <div class="comment-text">Ürün gerçekten çok kaliteli ve hızlı kargo için teşekkürler!</div>
+       <!--<div class="rating"></div>-->
+      </div>
+    </div>
+
+    <div class="comment">
+      <div class="avatar">
+        <img src="images/avatar.png">
+      </div>
+      <div class="comment-contents">
+        <div class="comment-text">Beklediğim gibi değildi ama yine de fena değil.</div>
+        <!--<div class="rating"></div-->
+      </div>
+    </div>
+ </div>
+ <script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight= "0px"
+    function menutoggle(){
+        if(MenuItems.style.maxHeight == "0px")
+         {
+            MenuItems.style.maxHeight =  "200px"
+         }
+         else
+         {
+            MenuItems.style.maxHeight = "0px"
+         }
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
