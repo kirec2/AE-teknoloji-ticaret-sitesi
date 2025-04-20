@@ -5,7 +5,7 @@
   
 **Referans Uygulama:** [hepsiburada](https://www.hepsiburada.com/)   
   
-**Uygulama Adresi :** [AE-Teknoloji](https://vercel.com/eray6ners-projects/ae-teknoloji-ticaret-sitesi-hucg)  
+**Uygulama Adresi :** [AE-Teknoloji](https://ae-teknoloji-ticaret-sitesi-hucg.vercel.app/file.html)
   
 **Grup Adı:** AE Teknoloji  
   
