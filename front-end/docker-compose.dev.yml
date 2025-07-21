@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # MongoDB Database (Development)
+  mongo:
+    image: mongo:6
+    restart: always
+    container_name: aeteknoloji-mongo-dev
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data-dev:/data/db
+    networks:
+      - aeteknoloji-dev-network
+
+  # Redis Cache (Development)
+  redis:
+    image: redis:7-alpine
+    restart: always
+    container_name: aeteknoloji-redis-dev
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data-dev:/data
+    networks:
+      - aeteknoloji-dev-network
+
+  # Backend API (Development)
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+      target: builder
+    restart: always
+    container_name: aeteknoloji-backend-dev
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongo:27017/aeteknoloji
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=dev-secret-key
+      - PORT=3001
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - aeteknoloji-dev-network
+    command: npm run dev
+
+volumes:
+  mongo-data-dev:
+    driver: local
+  redis-data-dev:
+    driver: local
+
+networks:
+  aeteknoloji-dev-network:
+    driver: bridge 

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AE Teknloji Site Tasarımı</title>
+  <link rel="stylesheet" href="style.css"> 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+
+</head>
+<body>
+    <div class="container">
+      <div class="navbar">
+        <div class="logo">
+            <img src="images/logo.png" width="125px">
+        </div>
+        <form class="search-bar">
+            <span class="material-symbols-outlined">search</span>
+            <input class="search-bar-input" type="search" placeholder="Ürün, kategori veya marka ara...">
+            <button type="submit">Ara</button>
+        </form>
+       <nav>
+            <ul id="MenuItems">
+             <li><a href="file.html">Ana Sayfa</a> </li>
+             <li><a href="ürünler.html">Ürün</a> </li>
+             <li><a href="favoriler.html">Favori</a> </li>
+             <li><a href="kayıt.html">Hesap</a> </li>
+             <li><a href="kargo-takip.html">Kargo Takip</a> </li>
+            </ul>
+        </nav>
+        <div class="language-selector">
+            <select id="languageSelect">
+                <option value="tr">Türkçe</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+        <a href="sepet.html"><img src="images/cart.png" width="30px" height="30px"></a>
+        <img src="images/menu-icon.png" class="menu-icon" onclick="menutoggle()">
+    </div>
+
+<!---------- single product details ------------>
+
+<div class="small-container single-product">
+    <div class="row">
+        <div class="col-2">
+            <img src="" width="100%" id="ProductImg">
+            
+        </div>
+        <div class="col-2">
+          <p id="product-series"></p>
+          <h1 id="product-name"></h1>
+          <h4 id="product-price"></h4>
+          <input type="number" value="1" id="quantity-input">
+          <button id="add-to-cart" class="button" type="button">Sepete Ekle</button>
+          <button id="add-to-favorites" class="button" type="button">Favorilere Ekle</button>
+           
+          <h3 class="product-details-title">Product Details</h3>
+          <p id="product-description">Ürün açıklaması burada görünecek.</p>
+      </div>
+    </div>
+</div>
+<!--Products-->
+<div class="small-container"></div>
+
+<div class="row-2">
+    <div class="col-4"> 
+        <img src="ürünler/ürün-1.jpg">
+        <h4>Çift Yönlü Fırlatıcı</h4>
+      <!--<div class="rating">
+
+        </div>-->
+      <p>150TL</p>
+    </div>
+    <div class="col-4"> 
+        <img src="ürünler/ürün-2.jpg">
+        <h4>Çift Yönlü Fırlatıcı</h4>
+      <!--<div class="rating">
+
+        </div>-->
+      <p>150TL</p>
+    </div>
+    <div class="col-4"> 
+        <img src="ürünler/ürün-4.jpg">
+        <h4>Çift Yönlü Fırlatıcı</h4>
+      <!--<div class="rating">
+
+        </div>-->
+      <p>150TL</p>
+    </div>
+    <div class="col-4"> 
+        <img src="ürünler/ürün-3.jpg">
+        <h4>Çift Yönlü Fırlatıcı</h4>
+      <!--<div class="rating">
+
+        </div>-->
+      <p>150TL</p>
+    </div>
+</div>
+
+<!-- Kullanıcı Yorumları Bölümü -->
+<div class="reviews-section">
+    <div class="small-container">
+        <h2 class="reviews-title">Kullanıcı Yorumları</h2>
+        <!-- Yorum Kartları -->
+        <div class="reviews-container" id="reviews-container">
+            <div>Yorumlar yükleniyor...</div>
+        </div>
+        <div id="add-review-section" style="margin-top:30px; display:none;">
+          <h3>Yorum Yaz</h3>
+          <form id="add-review-form">
+            <label>Puan:
+              <select id="review-rating" required>
+                <option value="">Seçiniz</option>
+                <option value="5">★★★★★</option>
+                <option value="4">★★★★☆</option>
+                <option value="3">★★★☆☆</option>
+                <option value="2">★★☆☆☆</option>
+                <option value="1">★☆☆☆☆</option>
+              </select>
+            </label><br><br>
+            <textarea id="review-comment" rows="3" style="width:100%;" placeholder="Yorumunuz..." required></textarea><br>
+            <button type="submit" class="button">Yorumu Gönder</button>
+          </form>
+        </div>
+    </div>
+</div>
+
+<!--------js for product gallery------>
+<script>
+var ProductImg = document.getElementById("ProductImg");
+var SmallImg = document.getElementsByClassName("small-img");
+
+SmallImg[0].onclick = function()
+{
+  ProductImg.src = SmallImg[0].src;
+}
+SmallImg[1].onclick = function()
+{
+  ProductImg.src = SmallImg[1].src;
+}
+SmallImg[2].onclick = function()
+{
+  ProductImg.src = SmallImg[2].src;
+}
+SmallImg[3].onclick = function()
+{
+  ProductImg.src = SmallImg[3].src;
+}
+</script>
+<script>
+  var MenuItems = document.getElementById("MenuItems");
+  MenuItems.style.maxHeight= "0px"
+  function menutoggle(){
+      if(MenuItems.style.maxHeight == "0px")
+       {
+          MenuItems.style.maxHeight =  "200px"
+       }
+       else
+       {
+          MenuItems.style.maxHeight = "0px"
+       }
+  }
+</script>
+<script src="script.js"></script>
+<script>
+document.querySelector('.search-bar').onsubmit = function(e) {
+    e.preventDefault();
+    const query = document.querySelector('.search-bar-input').value.trim();
+    if (!query) return;
+    window.location.href = `arama-sonuclari.html?q=${encodeURIComponent(query)}`;
+};
+</script>
+<script>
+// Ürün ID'sini URL'den al
+function getProductIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('id');
+}
+
+const productId = getProductIdFromUrl();
+if (productId) {
+  fetch('http://localhost:3001/api/products/' + productId)
+    .then(res => res.json())
+    .then(product => {
+      document.getElementById('ProductImg').src = product.imageUrl;
+      document.getElementById('product-name').textContent = product.name;
+      document.getElementById('product-price').textContent = product.price + ' TL';
+      document.getElementById('product-series').textContent = product.series;
+      document.getElementById('product-description').textContent = product.detail || 'Açıklama yok.';
+    })
+    .catch(() => {
+      document.getElementById('product-name').textContent = 'Ürün bulunamadı';
+    });
+}
+
+// Favorilere Ekle butonunu işlevlendir
+const favBtn = document.getElementById('add-to-favorites');
+if (favBtn && productId) {
+  favBtn.onclick = async function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Favorilere eklemek için giriş yapmalısınız!');
+      return;
+    }
+    try {
+      const res = await fetch('http://localhost:3001/api/favorites/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ productId })
+      });
+      if (res.ok) {
+        alert('Ürün favorilere eklendi!');
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Bir hata oluştu.');
+      }
+    } catch (err) {
+      alert('Bir hata oluştu.');
+    }
+  }
+}
+
+// Sepete Ekle butonunu işlevlendir
+const cartBtn = document.getElementById('add-to-cart');
+if (cartBtn && productId) {
+  cartBtn.onclick = async function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Sepete eklemek için giriş yapmalısınız!');
+      return;
+    }
+    
+    const quantity = parseInt(document.getElementById('quantity-input').value) || 1;
+    
+    try {
+      const res = await fetch('http://localhost:3001/api/cart/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ productId, quantity })
+      });
+      if (res.ok) {
+        alert('Ürün sepete eklendi!');
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Bir hata oluştu.');
+      }
+    } catch (err) {
+      alert('Bir hata oluştu.');
+    }
+  }
+}
+
+// Yorumları dinamik olarak yükle
+function loadReviews() {
+  const reviewsContainer = document.getElementById('reviews-container');
+  reviewsContainer.innerHTML = '<div>Yorumlar yükleniyor...</div>';
+  fetch('http://localhost:3001/api/products/' + productId + '/reviews')
+    .then(res => res.json())
+    .then(reviews => {
+      if (!reviews || reviews.length === 0) {
+        reviewsContainer.innerHTML = '<div style="color:#888;">Henüz yorum yok.</div>';
+        return;
+      }
+      reviewsContainer.innerHTML = '';
+      reviews.slice().reverse().forEach(review => {
+        reviewsContainer.innerHTML += `
+          <div class="review-card">
+            <div class="user-info">
+              <img src="images/avatar.png" alt="Kullanıcı" class="user-avatar">
+              <div class="user-details">
+                <h4>${review.userName || 'Kullanıcı'}</h4>
+                <div class="review-date">${new Date(review.date).toLocaleDateString('tr-TR')}</div>
+              </div>
+            </div>
+            <div class="rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+            <p class="review-text">${review.comment}</p>
+          </div>
+        `;
+      });
+    })
+    .catch(() => {
+      reviewsContainer.innerHTML = '<div style="color:#888;">Yorumlar yüklenemedi.</div>';
+    });
+}
+
+// Kullanıcı giriş yaptıysa yorum formunu göster
+function showReviewFormIfLoggedIn() {
+  const token = localStorage.getItem('token');
+  const section = document.getElementById('add-review-section');
+  if (token) {
+    section.style.display = '';
+  } else {
+    section.style.display = 'none';
+  }
+}
+
+// Yorum gönderme işlemi
+const addReviewForm = document.getElementById('add-review-form');
+if (addReviewForm) {
+  addReviewForm.onsubmit = async function(e) {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Yorum yazmak için giriş yapmalısınız!');
+      return;
+    }
+    const rating = parseInt(document.getElementById('review-rating').value);
+    const comment = document.getElementById('review-comment').value.trim();
+    if (!rating || !comment) {
+      alert('Lütfen puan ve yorum girin!');
+      return;
+    }
+    try {
+      const res = await fetch('http://localhost:3001/api/products/' + productId + '/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ rating, comment })
+      });
+      if (res.ok) {
+        document.getElementById('review-rating').value = '';
+        document.getElementById('review-comment').value = '';
+        loadReviews();
+        alert('Yorumunuz eklendi!');
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Bir hata oluştu.');
+      }
+    } catch (err) {
+      alert('Bir hata oluştu.');
+    }
+  }
+}
+
+// Sayfa yüklendiğinde yorumları ve formu yükle
+if (productId) {
+  loadReviews();
+  showReviewFormIfLoggedIn();
+}
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var langSelect = document.getElementById('languageSelect');
+  if (langSelect) {
+    langSelect.addEventListener('change', window.changeLanguage);
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kişisel Bilgiler - AE Teknoloji</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header bölümü (mevcut header'ınızı buraya ekleyebilirsiniz) -->
+    <div class="header">
+
+
+        <div class="container">
+            
+            <div class="navbar">
+                <div class="logo">
+                    <img src="images/logo.png" width="125px">
+                </div>
+                <form class="search-bar">
+                        <span class="material-symbols-outlined">search</span>
+                        <input class="search-bar-input" type="search" placeholder="Ürün, kategori veya marka ara...">
+                        <button type="submit">Ara</button>
+                </form>
+               <nav>
+                    <ul id="MenuItems">
+                     <li><a href="file.html">Ana Sayfa</a> </li>
+                     <li><a href="ürünler.html">Ürün</a> </li>
+                     <li><a href="favoriler.html">Favori</a> </li>
+                     <li><a href="kayıt.html">Hesap</a> </li>
+                     <li><a href="kargo-takip.html">Kargo Takip</a> </li>
+                    </ul>
+                </nav>
+                <div class="language-selector">
+                    <select id="languageSelect">
+                        <option value="tr">Türkçe</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <a href="sepet.html"><img src="images/cart.png" width="30px" height="30px"></a>
+                <img src="images/menu-icon.png" class="menu-icon" onclick="menutoggle()">
+            </div>
+        </div>
+    </div>
+    <div class="profile-container">
+        <!-- Sol menü -->
+        <div class="profile-menu">
+            <h2>Hesap Bilgileri</h2>
+            <ul>
+                <li>
+                    <button class="menu-button active" onclick="showContent('address')">Adres Bilgileri</button>
+                </li>
+                <li>
+                    <button class="menu-button" onclick="showContent('payment')">Kart Bilgileri</button>
+                </li>
+                <li>
+                    <button class="menu-button" onclick="showContent('logout')">Çıkış Yap</button> 
+                </li>
+            </ul>
+            <!-- Kayıtlı Adreslerim ve Kart Bilgim buraya taşındı -->
+            <div id="saved-addresses" style="margin-top:30px;">
+                <h3>Kayıtlı Adreslerim</h3>
+                <div id="address-list" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="color:#888; text-align: center; padding: 20px;">Yükleniyor...</div>
+                </div>
+            </div>
+            <div id="saved-card" style="margin-top:30px;">
+                <h3>Kayıtlı Kart Bilgim</h3>
+                <div id="card-info">
+                    <div style="color:#888; text-align: center; padding: 20px;">Yükleniyor...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ içerik alanı -->
+        <div class="profile-content">
+            <!-- Adres Bilgileri Formu -->
+            <div id="address-content" class="content-section">
+                <h2>Adres Bilgileri</h2>
+                <form class="info-form">
+                    <div class="form-group">
+                        <label for="city">İl</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="district">İlçe</label>
+                        <input type="text" id="district" name="district" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="neighborhood">Mahalle</label>
+                        <input type="text" id="neighborhood" name="neighborhood" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Adres</label>
+                        <textarea id="address" name="address" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="save-button">Kaydet</button>
+                </form>
+            </div>
+
+            <!-- Kart Bilgileri Formu -->
+            <div id="payment-content" class="content-section" style="display: none;">
+                <h2>Kart Bilgileri</h2>
+                <form class="info-form">
+                    <div class="form-group">
+                        <label for="card-number">Kart Numarası</label>
+                        <input type="text" id="card-number" name="card-number" 
+                               pattern="\d{4}\s\d{4}\s\d{4}\s\d{4}" 
+                               placeholder="0000 0000 0000 0000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="card-name">Kart Üzerindeki İsim</label>
+                        <input type="text" id="card-name" name="card-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiry-date">Son Kullanma Tarihi</label>
+                        <input type="text" id="expiry-date" name="expiry-date" 
+                               placeholder="YYYY/AA" 
+                               pattern="\d{4}/\d{2}" required>
+                    </div>
+                    <button type="submit" class="save-button">Kaydet</button>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        // Sayfa yüklendiğinde giriş kontrolü
+        if (!localStorage.getItem('token')) {
+            window.location.href = 'kayıt.html';
+        }
+
+        function showContent(contentType) {
+            // Eğer çıkış yap butonuna tıklandıysa
+            if (contentType === 'logout') {
+                localStorage.removeItem('token');
+                window.location.href = 'kayıt.html';
+                return;
+            }
+            
+            // Tüm içerikleri gizle
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Tüm menü butonlarından active class'ını kaldır
+            document.querySelectorAll('.menu-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Seçilen içeriği göster
+            document.getElementById(contentType + '-content').style.display = 'block';
+            
+            // Tıklanan butona active class'ı ekle
+            event.target.classList.add('active');
+        }
+
+        // Kart numarası formatlaması
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+            let newValue = '';
+            for(let i = 0; i < value.length; i++) {
+                if(i > 0 && i % 4 === 0) {
+                    newValue += ' ';
+                }
+                newValue += value[i];
+            }
+            e.target.value = newValue;
+        });
+    </script>
+    <script src="script.js"></script>
+    <script>
+    window.onload = function() {
+        // Çıkış butonunu güvenli şekilde ata
+        var logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.onclick = function() {
+                localStorage.removeItem('token');
+                window.location.href = 'kayıt.html';
+            };
+        } else {
+            console.warn('Çıkış butonu bulunamadı!');
+        }
+
+        // Adres kaydetme formu için fetch
+        var addressForm = document.querySelector('#address-content .info-form');
+        if (addressForm) {
+            addressForm.onsubmit = async function(e) {
+                e.preventDefault();
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        alert('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
+                        window.location.href = 'kayıt.html';
+                        return;
+                    }
+
+                    const body = {
+                        city: document.getElementById('city').value,
+                        district: document.getElementById('district').value,
+                        neighborhood: document.getElementById('neighborhood').value,
+                        address: document.getElementById('address').value
+                    };
+
+                    const res = await fetch('http://localhost:3001/api/user/address', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify(body)
+                    });
+
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+
+                    const data = await res.json();
+                    alert(data.message);
+                    
+                    // Formu temizle
+                    addressForm.reset();
+                    
+                    // Kayıtlı adresleri yeniden yükle
+                    await loadAddresses();
+                } catch (error) {
+                    console.error('Adres kaydedilirken hata:', error);
+                    alert('Adres kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.');
+                }
+            };
+        }
+
+        // Kart kaydetme formu için fetch
+        var cardForm = document.querySelector('#payment-content .info-form');
+        if (cardForm) {
+            cardForm.onsubmit = async function(e) {
+                e.preventDefault();
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        alert('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
+                        window.location.href = 'kayıt.html';
+                        return;
+                    }
+
+                    const body = {
+                        cardNumber: document.getElementById('card-number').value,
+                        cardName: document.getElementById('card-name').value,
+                        expiryDate: document.getElementById('expiry-date').value
+                    };
+
+                    const res = await fetch('http://localhost:3001/api/user/card', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify(body)
+                    });
+
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+
+                    const data = await res.json();
+                    alert(data.message);
+                    
+                    // Formu temizle
+                    cardForm.reset();
+                    
+                    // Kayıtlı kart bilgisini yeniden yükle
+                    await loadCardInfo();
+                } catch (error) {
+                    console.error('Kart kaydedilirken hata:', error);
+                    alert('Kart kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.');
+                }
+            };
+        }
+
+        // Kayıtlı adresleri getir ve göster
+        async function loadAddresses() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('Token bulunamadı');
+                    return;
+                }
+
+                const res = await fetch('http://localhost:3001/api/user/addresses', {
+                    headers: { 
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const data = await res.json();
+                const addressList = document.getElementById('address-list');
+                addressList.innerHTML = '';
+
+                if (data.addresses && data.addresses.length > 0) {
+                    data.addresses.forEach((addr, idx) => {
+                        const div = document.createElement('div');
+                        div.className = 'address-card';
+                        div.style = 'border:1px solid #ccc; border-radius:8px; padding:10px; background:#fafafa; cursor:pointer; margin-bottom:10px;';
+                        div.innerHTML = `
+                            <div style="font-weight: bold; color: #333; margin-bottom: 5px;">Adres ${idx + 1}</div>
+                            <div style="color: #666; line-height: 1.4;">
+                                <strong>İl:</strong> ${addr.city}<br>
+                                <strong>İlçe:</strong> ${addr.district}<br>
+                                <strong>Mahalle:</strong> ${addr.neighborhood}<br>
+                                <strong>Adres:</strong> ${addr.address}
+                            </div>
+                        `;
+                        
+                        // Adres seçimi için tıklama
+                        div.onclick = function() {
+                            document.getElementById('city').value = addr.city;
+                            document.getElementById('district').value = addr.district;
+                            document.getElementById('neighborhood').value = addr.neighborhood;
+                            document.getElementById('address').value = addr.address;
+                        };
+                        
+                        addressList.appendChild(div);
+                    });
+                } else {
+                    addressList.innerHTML = '<div style="color:#888; text-align: center; padding: 20px;">Henüz kayıtlı adres bulunmuyor.</div>';
+                }
+            } catch (error) {
+                console.error('Adresler yüklenirken hata:', error);
+                const addressList = document.getElementById('address-list');
+                addressList.innerHTML = '<div style="color:#ff4444; text-align: center; padding: 20px;">Adresler yüklenirken bir hata oluştu.</div>';
+            }
+        }
+
+        // Kayıtlı kart bilgisini getir ve göster
+        async function loadCardInfo() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('Token bulunamadı');
+                    return;
+                }
+
+                const res = await fetch('http://localhost:3001/api/user/card', {
+                    headers: { 
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const data = await res.json();
+                const cardInfo = document.getElementById('card-info');
+                
+                if (data.card && data.card.cardNumber) {
+                    // Kart numarasını maskeleme (sadece son 4 haneyi göster)
+                    const maskedCardNumber = data.card.cardNumber.replace(/\d(?=\d{4})/g, '*');
+                    
+                    cardInfo.innerHTML = `
+                        <div style="border:1px solid #ccc; border-radius:8px; padding:15px; background:#fafafa;">
+                            <div style="font-weight: bold; color: #333; margin-bottom: 10px;">Kayıtlı Kart Bilgileri</div>
+                            <div style="color: #666; line-height: 1.6;">
+                                <strong>Kart Numarası:</strong> ${maskedCardNumber}<br>
+                                <strong>Kart Sahibi:</strong> ${data.card.cardName}<br>
+                                <strong>Son Kullanma Tarihi:</strong> ${data.card.expiryDate}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    cardInfo.innerHTML = '<div style="color:#888; text-align: center; padding: 20px;">Henüz kayıtlı kart bulunmuyor.</div>';
+                }
+            } catch (error) {
+                console.error('Kart bilgisi yüklenirken hata:', error);
+                const cardInfo = document.getElementById('card-info');
+                cardInfo.innerHTML = '<div style="color:#ff4444; text-align: center; padding: 20px;">Kart bilgisi yüklenirken bir hata oluştu.</div>';
+            }
+        }
+
+        // Sayfa yüklendiğinde adres ve kart bilgisini getir
+        loadAddresses();
+        loadCardInfo();
+
+
+    };
+    </script>
+    <script src="script.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Dil seçici event listener
+    var langSelect = document.getElementById('languageSelect');
+    if (langSelect) {
+        // Dil değiştirme event listener
+        langSelect.addEventListener('change', function() {
+            console.log('Dil değiştiriliyor:', this.value);
+            if (window.changeLanguage) {
+                window.changeLanguage();
+            }
+        });
+        
+        // Sayfa yüklendiğinde mevcut dili ayarla
+        const savedLanguage = localStorage.getItem('language') || 'tr';
+        console.log('Kaydedilmiş dil:', savedLanguage);
+        langSelect.value = savedLanguage;
+        
+        // Sayfa içeriğini güncelle
+        if (window.updatePageContent) {
+            console.log('updatePageContent çağrılıyor');
+            window.updatePageContent(savedLanguage);
+        }
+    }
+    
+    // Arama çubuğu
+    document.querySelector('.search-bar').onsubmit = function(e) {
+        e.preventDefault();
+        const query = document.querySelector('.search-bar-input').value.trim();
+        if (!query) return;
+        window.location.href = `arama-sonuclari.html?q=${encodeURIComponent(query)}`;
+    };
+});
+</script>
+</body>
+</html>

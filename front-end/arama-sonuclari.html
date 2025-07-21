@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arama Sonuçları - AE Teknoloji</title>
+  <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <img src="images/logo.png" width="125px">
+                </div>
+                <form class="search-bar">
+                    <span class="material-symbols-outlined">search</span>
+                    <input class="search-bar-input" type="search" placeholder="Ürün, kategori veya marka ara...">
+                    <button type="submit">Ara</button>
+                </form>
+               <nav>
+                    <ul id="MenuItems">
+                     <li><a href="file.html">Ana Sayfa</a> </li>
+                     <li><a href="ürünler.html">Ürün</a> </li>
+                     <li><a href="favoriler.html">Favori</a> </li>
+                     <li><a href="kayıt.html">Hesap</a> </li>
+                     <li><a href="kargo-takip.html">Kargo Takip</a> </li>
+                    </ul>
+                </nav>
+                <div class="language-selector">
+                    <select id="languageSelect">
+                        <option value="tr">Türkçe</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <a href="sepet.html"><img src="images/cart.png" width="30px" height="30px"></a>
+                <img src="images/menu-icon.png" class="menu-icon" onclick="menutoggle()">
+            </div>
+        </div>
+    </div>
+
+<div class="row-2">
+    <h2 class="title">Arama Sonuçları</h2>
+</div>
+<div class="row-2" id="product-list">
+    <!-- Arama sonuçları buraya dinamik olarak eklenecek -->
+</div>
+<script>
+document.querySelector('.search-bar').onsubmit = function(e) {
+    e.preventDefault();
+    const query = document.querySelector('.search-bar-input').value.trim();
+    if (!query) return;
+    window.location.href = `arama-sonuclari.html?q=${encodeURIComponent(query)}`;
+};
+// URL'den arama sorgusunu al
+function getQuery() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('q')?.toLowerCase() || '';
+}
+
+const query = getQuery();
+
+fetch('http://localhost:3001/api/products')
+  .then(res => res.json())
+  .then(products => {
+    const productList = document.getElementById('product-list');
+    productList.innerHTML = '';
+    // Hem isim hem seri eşleşmesi
+    const filtered = products.filter(product =>
+      product.name.toLowerCase().includes(query) ||
+      (product.series && product.series.toLowerCase().includes(query))
+    );
+    if (!filtered.length) {
+      productList.innerHTML = '<div style="color:#888; text-align:center;">Aramanıza uygun ürün bulunamadı.</div>';
+      return;
+    }
+    let row;
+    filtered.forEach((product, idx) => {
+      if (idx % 4 === 0) {
+        row = document.createElement('div');
+        row.className = 'row-2';
+        productList.appendChild(row);
+      }
+      const col = document.createElement('div');
+      col.className = 'col-4';
+      col.innerHTML = `
+        <a href="ürün-detayları.html?id=${product._id}">
+          <img src="${product.imageUrl}" alt="${product.name}">
+          <h4>${product.name}</h4>
+          <p>${product.price} TL</p>
+          <span style='font-size:13px;color:#888;'>${product.series}</span>
+        </a>
+      `;
+      row.appendChild(col);
+    });
+  })
+  .catch(err => {
+    document.getElementById('product-list').innerHTML = '<div style="color:red;">Ürünler yüklenemedi.</div>';
+    console.error('Ürünler yüklenemedi:', err);
+  });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var langSelect = document.getElementById('languageSelect');
+  if (langSelect) {
+    langSelect.addEventListener('change', window.changeLanguage);
+  }
+});
+</script>
+</body>
+</html> 

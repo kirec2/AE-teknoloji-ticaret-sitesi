@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AE Teknloji Site Tasarımı</title>
+  <link rel="stylesheet" href="style.css"> 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+
+</head>
+<body>
+
+
+
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="images/logo.png" width="125px">
+            </div>
+            <form class="search-bar">
+                <span class="material-symbols-outlined">search</span>
+                <input class="search-bar-input" type="search" placeholder="Ürün, kategori veya marka ara...">
+                <button type="submit">Ara</button>
+            </form>
+           <nav>
+                <ul id="MenuItems">
+                 <li><a href="file.html">Ana Sayfa</a> </li>
+                 <li><a href="ürünler.html">Ürün</a> </li>
+                 <li><a href="favoriler.html">Favori</a> </li>
+                 <li><a href="kayıt.html">Hesap</a> </li>
+                 <li><a href="kargo-takip.html">Kargo Takip</a> </li>
+                </ul>
+            </nav>
+            <div class="language-selector">
+                <select id="languageSelect">
+                    <option value="tr">Türkçe</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <a href="sepet.html"><img src="images/cart.png" width="30px" height="30px"></a>
+            <img src="images/menu-icon.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+        <div>
+        </div> 
+        
+    </div>
+<!-- cart item details-->
+ <div class="small-container cart-page">
+    <table id="cart-table">
+        <tr>
+            <th>Ürün</th>
+            <th>Miktar</th>
+            <th>Toplam</th>
+        </tr>
+        <!-- Sepet ürünleri buraya dinamik olarak eklenecek -->
+    </table>
+    <div class="total-price">
+        <table>
+            <tr>
+                <td>Toplam Fiyat</td>
+                <td id="total-price">0 TL</td>
+            </tr>
+        </table>
+        <button onclick="openPaymentModal()" class="checkout-button">Ödemeye Geç</button>
+    </div>
+</div>
+<!-- Ödeme Modalı -->
+<div id="payment-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:#fff; padding:30px 40px; border-radius:12px; min-width:320px; max-width:95vw; position:relative;">
+    <button onclick="closePaymentModal()" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+    <h2>Ödeme Ekranı</h2>
+    <form id="payment-form">
+      <div style="margin-bottom:18px;">
+        <label><strong>Adres Seçiniz:</strong></label>
+        <div id="address-options" style="max-height:120px; overflow-y:auto; margin-top:6px; margin-bottom:10px; border:1px solid #eee; border-radius:6px; padding:8px 4px;"></div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <label><strong>Kart Seçiniz:</strong></label>
+        <div id="card-options" style="margin-top:6px; margin-bottom:10px; border:1px solid #eee; border-radius:6px; padding:8px 4px;"></div>
+      </div>
+      <button type="submit" style="padding:10px 20px; background:#800080; color:#fff; border:none; border-radius:5px;">Ödemeyi Tamamla</button>
+    </form>
+    <div id="payment-success" style="display:none; color:green; margin-top:20px;">Ödeme başarılı! Siparişiniz alındı.</div>
+  </div>
+</div>
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight= "0px"
+    function menutoggle(){
+        if(MenuItems.style.maxHeight == "0px")
+         {
+            MenuItems.style.maxHeight =  "200px"
+         }
+         else
+         {
+            MenuItems.style.maxHeight = "0px"
+         }
+    }
+  </script>
+  <script src="script.js"></script>
+<script>
+document.querySelector('.search-bar').onsubmit = function(e) {
+    e.preventDefault();
+    const query = document.querySelector('.search-bar-input').value.trim();
+    if (!query) return;
+    window.location.href = `arama-sonuclari.html?q=${encodeURIComponent(query)}`;
+};
+</script>
+<script>
+// Sepet ürünlerini dinamik olarak yükle
+function loadCartItems() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    document.getElementById('cart-table').innerHTML = '<tr><td colspan="3" style="text-align:center;">Sepeti görüntülemek için giriş yapmalısınız.</td></tr>';
+    return;
+  }
+
+  fetch('http://localhost:3001/api/cart', {
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(res => res.json())
+  .then(cart => {
+    const cartTable = document.getElementById('cart-table');
+    const tbody = cartTable.querySelector('tbody') || cartTable;
+    
+    // Header'ı koru, içeriği temizle
+    const header = cartTable.querySelector('tr');
+    cartTable.innerHTML = '';
+    cartTable.appendChild(header);
+    
+    if (!cart.items || cart.items.length === 0) {
+      const emptyRow = document.createElement('tr');
+      emptyRow.innerHTML = '<td colspan="3" style="text-align:center;">Sepetinizde ürün bulunmuyor.</td>';
+      cartTable.appendChild(emptyRow);
+      document.getElementById('total-price').textContent = '0 TL';
+      return;
+    }
+    
+    let totalPrice = 0;
+    
+    cart.items.forEach(item => {
+      const row = document.createElement('tr');
+      const itemTotal = item.product.price * item.quantity;
+      totalPrice += itemTotal;
+      
+      row.innerHTML = `
+        <td>
+          <div class="cart-info">
+            <img src="${item.product.imageUrl}" alt="${item.product.name}">
+            <div>
+              <p>${item.product.name}</p>
+              <small>Price: ${item.product.price} TL</small>
+              <br>
+              <a href="#" onclick="removeFromCart('${item.product._id}')">Remove</a>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="quantity-controls" style="display: flex; align-items: center; gap: 8px;">
+            <button onclick="updateQuantity('${item.product._id}', ${item.quantity - 1})" 
+                    style="width: 30px; height: 30px; border: 1px solid #ddd; background: #f8f8f8; border-radius: 4px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;"
+                    ${item.quantity <= 1 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : 'onmouseover="this.style.background=\'#e0e0e0\'" onmouseout="this.style.background=\'#f8f8f8\'"'}
+                    >-</button>
+            <span style="min-width: 40px; text-align: center; font-weight: bold; font-size: 16px;">${item.quantity}</span>
+            <button onclick="updateQuantity('${item.product._id}', ${item.quantity + 1})" 
+                    style="width: 30px; height: 30px; border: 1px solid #ddd; background: #f8f8f8; border-radius: 4px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;"
+                    onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#f8f8f8'">+</button>
+          </div>
+        </td>
+        <td>${itemTotal.toFixed(2)} TL</td>
+      `;
+      cartTable.appendChild(row);
+    });
+    
+    document.getElementById('total-price').textContent = totalPrice.toFixed(2) + ' TL';
+  })
+  .catch(err => {
+    document.getElementById('cart-table').innerHTML = '<tr><td colspan="3" style="text-align:center;">Sepet yüklenemedi.</td></tr>';
+  });
+}
+
+// Sepetten ürün kaldır
+function removeFromCart(productId) {
+  const token = localStorage.getItem('token');
+  if (!token) return;
+  
+  fetch('http://localhost:3001/api/cart/remove', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({ productId })
+  })
+  .then(res => res.json())
+  .then(() => {
+    loadCartItems(); // Sepeti yenile
+  })
+  .catch(err => {
+    alert('Ürün kaldırılırken hata oluştu.');
+  });
+}
+
+// Ürün miktarını güncelle
+function updateQuantity(productId, newQuantity) {
+  const token = localStorage.getItem('token');
+  if (!token) return;
+  
+  // Miktar 0 veya daha az ise ürünü sepetten kaldır
+  if (newQuantity <= 0) {
+    removeFromCart(productId);
+    return;
+  }
+  
+  // Önce mevcut sepeti al
+  fetch('http://localhost:3001/api/cart', {
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(res => res.json())
+  .then(cart => {
+    // Mevcut ürünün miktarını bul
+    const currentItem = cart.items.find(item => item.product._id === productId);
+    if (!currentItem) {
+      console.error('Ürün sepette bulunamadı');
+      return;
+    }
+    
+    const currentQuantity = currentItem.quantity;
+    const quantityDifference = newQuantity - currentQuantity;
+    
+    // Miktar farkını ekle (add endpoint'i mevcut miktara ekleme yapar)
+    return fetch('http://localhost:3001/api/cart/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({ productId, quantity: quantityDifference })
+    });
+  })
+  .then(res => res.json())
+  .then(() => {
+    loadCartItems(); // Sepeti yenile
+  })
+  .catch(err => {
+    console.error('Miktar güncellenirken hata:', err);
+    alert('Miktar güncellenirken hata oluştu.');
+  });
+}
+
+// Sayfa yüklendiğinde sepeti yükle
+window.addEventListener('DOMContentLoaded', loadCartItems);
+</script>
+<script>
+function openPaymentModal() {
+  document.getElementById('payment-modal').style.display = 'flex';
+  loadPaymentAddresses();
+  loadPaymentCard();
+}
+function closePaymentModal() {
+  document.getElementById('payment-modal').style.display = 'none';
+  document.getElementById('payment-success').style.display = 'none';
+  document.getElementById('payment-form').style.display = '';
+}
+
+// Adresleri fetch et ve modalda göster
+function loadPaymentAddresses() {
+  const token = localStorage.getItem('token');
+  const addressOptions = document.getElementById('address-options');
+  addressOptions.innerHTML = '<div>Yükleniyor...</div>';
+  fetch('http://localhost:3001/api/user/addresses', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
+  .then(res => res.json())
+  .then(data => {
+    addressOptions.innerHTML = '';
+    if (data.addresses && data.addresses.length > 0) {
+      data.addresses.forEach((addr, idx) => {
+        const id = 'address-radio-' + idx;
+        addressOptions.innerHTML += `
+          <div style="margin-bottom:6px;">
+            <input type="radio" name="selectedAddress" id="${id}" value="${idx}" ${idx===0?'checked':''}>
+            <label for="${id}">${addr.city}, ${addr.district}, ${addr.neighborhood}, ${addr.address}</label>
+          </div>
+        `;
+      });
+    } else {
+      addressOptions.innerHTML = '<div style="color:#888;">Kayıtlı adres yok.</div>';
+    }
+  })
+  .catch(() => {
+    addressOptions.innerHTML = '<div style="color:#888;">Adresler yüklenemedi.</div>';
+  });
+}
+
+// Kart bilgisini fetch et ve modalda göster
+function loadPaymentCard() {
+  const token = localStorage.getItem('token');
+  const cardOptions = document.getElementById('card-options');
+  cardOptions.innerHTML = '<div>Yükleniyor...</div>';
+  fetch('http://localhost:3001/api/user/card', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
+  .then(res => res.json())
+  .then(data => {
+    cardOptions.innerHTML = '';
+    if (data.card && data.card.cardNumber) {
+      cardOptions.innerHTML = `
+        <div>
+          <input type="radio" name="selectedCard" id="card-radio-0" value="0" checked>
+          <label for="card-radio-0">${data.card.cardNumber} - ${data.card.cardName} - ${data.card.expiryDate}</label>
+        </div>
+      `;
+    } else {
+      cardOptions.innerHTML = '<div style="color:#888;">Kayıtlı kart yok.</div>';
+    }
+  })
+  .catch(() => {
+    cardOptions.innerHTML = '<div style="color:#888;">Kart bilgisi yüklenemedi.</div>';
+  });
+}
+
+// Ödeme formunu simüle et
+window.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('payment-form');
+  if (form) {
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      // Seçili adres ve kart kontrolü
+      const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+      const selectedCard = document.querySelector('input[name="selectedCard"]:checked');
+      if (!selectedAddress) {
+        alert('Lütfen bir adres seçin!');
+        return;
+      }
+      if (!selectedCard) {
+        alert('Lütfen bir kart seçin!');
+        return;
+      }
+      form.style.display = 'none';
+      document.getElementById('payment-success').style.display = '';
+      setTimeout(closePaymentModal, 2000); // 2 saniye sonra modalı kapat
+    };
+  }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var langSelect = document.getElementById('languageSelect');
+  if (langSelect) {
+    langSelect.addEventListener('change', window.changeLanguage);
+  }
+});
+</script>
+
+</body>

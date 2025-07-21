@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorilerim - AE Teknoloji</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <img src="images/logo.png" width="125px">
+                </div>
+                <form class="search-bar">
+                    <span class="material-symbols-outlined">search</span>
+                    <input class="search-bar-input" type="search" placeholder="Ürün, kategori veya marka ara...">
+                    <button type="submit">Ara</button>
+                </form>
+               <nav>
+                    <ul id="MenuItems">
+                     <li><a href="file.html">Ana Sayfa</a> </li>
+                     <li><a href="ürünler.html">Ürün</a> </li>
+                     <li><a href="favoriler.html">Favori</a> </li>
+                     <li><a href="kayıt.html">Hesap</a> </li>
+                     <li><a href="kargo-takip.html">Kargo Takip</a> </li>
+                    </ul>
+                </nav>
+                <div class="language-selector">
+                    <select id="languageSelect">
+                        <option value="tr">Türkçe</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                <a href="sepet.html"><img src="images/cart.png" width="30px" height="30px"></a>
+                <img src="images/menu-icon.png" class="menu-icon" onclick="menutoggle()">
+            </div>
+        </div>
+    </div>
+
+    <!-- Favoriler Başlık -->
+    <div class="small-container">
+        <h2 class="title" id="favorites-title">Favori Ürünlerim</h2>
+        <div id="favorites-list">
+          <!-- Favori ürünler buraya dinamik olarak eklenecek -->
+        </div>
+
+        <!-- Boş Favoriler Mesajı -->
+        <div class="empty-favorites" style="display: none;">
+            <h3 id="favorites-empty-title">Henüz favori ürününüz bulunmuyor</h3>
+            <p id="favorites-empty-desc">Ürünleri keşfetmek için <a href="ürünler.html" id="favorites-empty-link">ürünler sayfasını</a> ziyaret edebilirsiniz.</p>
+        </div>
+    </div>
+
+    <script>
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight = "0px";
+        
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == "0px") {
+                MenuItems.style.maxHeight = "200px";
+            } else {
+                MenuItems.style.maxHeight = "0px";
+            }
+        }
+
+        
+        // Favori ürünleri dinamik olarak çek ve göster
+        async function loadFavorites() {
+            const token = localStorage.getItem('token');
+            const favoritesRow = document.querySelector('.small-container .row');
+            const emptyMsg = document.querySelector('.empty-favorites');
+            if (!token) {
+                favoritesRow.innerHTML = '';
+                emptyMsg.style.display = 'block';
+                return;
+            }
+            const res = await fetch(`${BASE_URL}/favorites`, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const products = await res.json();
+            if (!products.length) {
+                favoritesRow.innerHTML = '';
+                emptyMsg.style.display = 'block';
+                return;
+            }
+            emptyMsg.style.display = 'none';
+            favoritesRow.innerHTML = '';
+            products.forEach(product => {
+                const col = document.createElement('div');
+                col.className = 'col-4';
+                col.innerHTML = `
+                    <img src="${product.imageUrl || 'images/ürün-1.jpg'}">
+                    <h4>${product.name}</h4>
+                    <p>${product.price} TL</p>
+                    <div class="product-actions">
+                        <button class="remove-favorite" id="remove-favorite-btn">Favorilerden Çıkar</button>
+                        <button class="add-to-cart" id="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                `;
+                // Favoriden çıkarma
+                col.querySelector('.remove-favorite').onclick = async () => {
+                    await fetch(`${BASE_URL}/favorites/remove`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify({ productId: product._id })
+                    });
+                    loadFavorites();
+                };
+                // Sepete ekleme
+                col.querySelector('.add-to-cart').onclick = async () => {
+                    await fetch(`${BASE_URL}/cart/add`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: JSON.stringify({ productId: product._id, quantity: 1 })
+                    });
+                    alert('Ürün sepete eklendi!');
+                };
+                favoritesRow.appendChild(col);
+            });
+        }
+        window.addEventListener('DOMContentLoaded', loadFavorites);
+    </script>
+    <script>
+document.querySelector('.search-bar').onsubmit = function(e) {
+    e.preventDefault();
+    const query = document.querySelector('.search-bar-input').value.trim();
+    if (!query) return;
+    window.location.href = `arama-sonuclari.html?q=${encodeURIComponent(query)}`;
+};
+</script>
+    <script>
+// Kullanıcı giriş yaptıysa token localStorage'da olmalı
+const token = localStorage.getItem('token');
+
+if (token) {
+  fetch('http://localhost:3001/api/favorites', {
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(res => res.json())
+  .then(products => {
+    const favoriteList = document.getElementById('favorites-list');
+    favoriteList.innerHTML = '';
+    if (products.length === 0) {
+      favoriteList.innerHTML = '<p>Henüz favori ürününüz bulunmuyor<br>Ürünleri keşfetmek için <a href="ürünler.html">ürünler</a> sayfasını ziyaret edebilirsiniz.</p>';
+      return;
+    }
+    products.forEach((product, index) => {
+      // Her 4 üründe bir yeni satır başlat
+      if (index % 4 === 0) {
+        const row = document.createElement('div');
+        row.className = 'row-2';
+        row.id = `row-${Math.floor(index / 4)}`;
+        favoriteList.appendChild(row);
+      }
+      
+      const div = document.createElement('div');
+      div.className = 'col-4';
+      div.innerHTML = `
+        <a href="ürün-detayları.html?id=${product._id}">
+          <img src="${product.imageUrl}" alt="${product.name}">
+          <h4>${product.name}</h4>
+          <p>${product.price} TL</p>
+          <span style="font-size:13px;color:#888;">${product.series}</span>
+        </a>
+        <div class="product-actions">
+          <button class="remove-favorite" onclick="removeFromFavorites('${product._id}')">Favorilerden Kaldır</button>
+          <button class="add-to-cart" onclick="addToCart('${product._id}')">Sepete Ekle</button>
+        </div>
+      `;
+      
+      // Ürünü son satıra ekle
+      const currentRow = favoriteList.querySelector(`#row-${Math.floor(index / 4)}`);
+      currentRow.appendChild(div);
+    });
+  })
+  .catch(() => {
+    document.getElementById('favorites-list').innerHTML = '<p style="text-align:center;">Henüz favori ürününüz bulunmuyor<br>Ürünleri keşfetmek için <a href="ürünler.html" style="color:#ff9800;">ürünler</a> sayfasını ziyaret edebilirsiniz.</p>';
+  });
+} else {
+  document.getElementById('favorites-list').innerHTML = '<p>Favori ürünleri görmek için giriş yapmalısınız.</p>';
+}
+
+// Favorilerden kaldır fonksiyonu
+function removeFromFavorites(productId) {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Bu işlem için giriş yapmalısınız!');
+    return;
+  }
+  
+  fetch('http://localhost:3001/api/favorites/remove', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({ productId })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert('Ürün favorilerden kaldırıldı!');
+    // Sayfayı yenile
+    location.reload();
+  })
+  .catch(err => {
+    alert('Bir hata oluştu!');
+  });
+}
+
+// Sepete ekle fonksiyonu
+function addToCart(productId) {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Bu işlem için giriş yapmalısınız!');
+    return;
+  }
+  
+  fetch('http://localhost:3001/api/cart/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({ productId, quantity: 1 })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert('Ürün sepete eklendi!');
+  })
+  .catch(err => {
+    alert('Bir hata oluştu!');
+  });
+}
+    </script>
+    <script>
+// Sayfa yüklendiğinde kaydedilmiş dili uygula ve select'i güncelle
+window.addEventListener('DOMContentLoaded', function() {
+  var savedLanguage = localStorage.getItem('language') || 'tr';
+  var langSelect = document.getElementById('languageSelect');
+  if (langSelect) langSelect.value = savedLanguage;
+  if (typeof updatePageContent === 'function') updatePageContent(savedLanguage);
+});
+</script>
+    <script src="script.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+  var langSelect = document.getElementById('languageSelect');
+  if (langSelect) {
+    langSelect.addEventListener('change', window.changeLanguage);
+  }
+});
+</script>
+</body>
+</html>
